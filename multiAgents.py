@@ -208,8 +208,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
 
         root_node_value = highest
-        print(root_node_value)
+        # print(root_node_value)
         return bestAction
+        
         #util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
