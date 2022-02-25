@@ -126,14 +126,14 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
     def getAction(self, gameState):
         """
-        Returns the minimax action from the current gameState using self.depth
+        Returns the minimax action from the current gameState using # ! self.depth
         and self.evaluationFunction.
 
         Here are some method calls that might be useful when implementing minimax.
 
         gameState.getLegalActions(agentIndex):
         Returns a list of legal actions for an agent
-        agentIndex=0 means Pacman, ghosts are >= 1
+        agentIndex=0 means Pacman, ghosts are >= 1 
 
         gameState.generateSuccessor(agentIndex, action):
         Returns the successor game state after an agent takes an action
@@ -174,6 +174,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
             return lowest
 
+
         # helper function for max: returns minimax MAX value
         def max_score(agentId, depth, gameState):
             actions = gameState.getLegalActions(agentId)
@@ -192,7 +193,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             
             return highest
 
-        #* start from root node:
+        # start from root node:
         depth = self.depth
         agentId = 0
         actions = gameState.getLegalActions(agentId)
@@ -210,7 +211,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         root_node_value = highest
         # print(root_node_value)
         return bestAction
-        
+
         #util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
