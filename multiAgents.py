@@ -12,6 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
+from cmath import inf
 from util import manhattanDistance
 from game import Directions
 import random, util
@@ -147,10 +148,68 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
-        best_action = ''
-        root_node_value = ''
+
+        # helper function for min: returns minimax MIN value
+        def min_score(agentId, depth, gameState):
+            actions = gameState.getLegalActions(agentId)
+            lowest = inf
+
+            if actions == []:
+                return scoreEvaluationFunction(gameState)
+
+
+            for action in actions:
+                nextState = gameState.generateSuccessor(agentId, action)
+
+                # if the next agent is a ghost
+                if agentId < gameState.getNumAgents() - 1:
+                    score = min_score(agentId + 1, depth, nextState)
+                
+                # if the next agent is pacman
+                else:
+                    score = max_score(0, depth - 1, nextState)
+
+                if score < lowest:
+                    lowest = score
+
+            return lowest
+
+        # helper function for max: returns minimax MAX value
+        def max_score(agentId, depth, gameState):
+            actions = gameState.getLegalActions(agentId)
+            highest = -inf
+
+            # a terminal state OR we have run out of depth/ply
+            if actions == [] or depth == 0:
+                return scoreEvaluationFunction(gameState)
+
+            for action in actions:
+                nextState = gameState.generateSuccessor(agentId, action)
+                score = min_score(1, depth, nextState)
+
+                if score > highest:
+                    highest = score
+            
+            return highest
+
+        #* start from root node:
+        depth = self.depth
+        agentId = 0
+        actions = gameState.getLegalActions(agentId)
+        highest = -inf
+
+        for action in actions:
+            nextState = gameState.generateSuccessor(agentId, action)
+            score = min_score(1, depth, nextState)
+
+            if score > highest:
+                highest = score
+                bestAction = action
+
+
+        root_node_value = highest
         print(root_node_value)
-        return best_action
+        return bestAction
         #util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
