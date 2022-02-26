@@ -126,7 +126,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
     def getAction(self, gameState):
         """
-        Returns the minimax action from the current gameState using # ! self.depth
+        Returns the minimax action from the current gameState using self.depth
         and self.evaluationFunction.
 
         Here are some method calls that might be useful when implementing minimax.
@@ -167,6 +167,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 
                 # if the next agent is pacman
                 else:
+                    # we subtract 1 from depth because this is the end of a ply.
                     score = max_score(0, depth - 1, nextState)
 
                 if score < lowest:
