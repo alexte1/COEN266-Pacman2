@@ -13,7 +13,7 @@
 
 
 from util import manhattanDistance
-from game import Directions
+from game import Directions, GameStateData
 import random, util
 
 from game import Agent
@@ -149,9 +149,44 @@ class MinimaxAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         best_action = ''
         root_node_value = ''
+
+        num_agents = gameState.getNumAgents()
+        for depth in range(self.depth):
+            for i in range(num_agents):
+                agent_possible_moves = gameState.getLegalActions(i)
+                agent_optimal_score = 0 # agent_optimal_score is the score that the agent wants to take. Min takes smallest, Pacman takes biggest.
+                for j in range(len(agent_possible_moves)):
+                    print(f"possible moves: {agent_possible_moves}")
+                    score = scoreEvaluationFunction(gameState.generateSuccessor(i, agent_possible_moves[j]))
+                    if i == 0:
+                        # This is pacman. Choose only biggest value.
+                        if score > agent_optimal_score:
+                            print(f"Pacman picking new score: {score} > {agent_optimal_score}")
+                            agent_optimal_score = score
+                            agent_optimal_action = agent_possible_moves[j]
+                            next_state = gameState.generateSuccessor(i, agent_optimal_action)
+                    else:
+                        print(f"This should be ghost. score is: {score}")
+                        # This is the ghost. Choose only smallest values.
+                        if score < agent_optimal_score:
+                            print(f"Ghost picking new score: {score} > {agent_optimal_score}")
+                            agent_optimal_score = score
+                            agent_optimal_action = agent_possible_moves[j]
+                            next_state = gameState.generateSuccessor(i, agent_optimal_action)
+                if i == 0:
+                    print(f"Pacman should take action: {agent_optimal_action} with score of: {agent_optimal_score}")
+                    gameState = next_state
+                    print(f"Game State after Pacman took action: {agent_optimal_action}")
+                    print(gameState)
+                else:
+                    print(f"Ghost #{i} should take action: {agent_optimal_action} with score of: {agent_optimal_score}")
+                    gameState = next_state
+                    print(f"Game State after Ghost #{i} took action: {agent_optimal_action}")
+                    print(gameState)
+
         print(root_node_value)
         return best_action
-        #util.raiseNotDefined()
+        util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
